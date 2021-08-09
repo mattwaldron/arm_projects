@@ -157,41 +157,62 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>82</LineNumber>
+          <LineNumber>52</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>770</Address>
+          <Address>582</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>.\mersenne.c</Filename>
+          <Filename>.\main.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\Blinky\mersenne.c\82</Expression>
+          <Expression>\\Blinky\main.c\52</Expression>
         </Bp>
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
-          <LineNumber>52</LineNumber>
+          <LineNumber>67</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>0</Address>
+          <Address>680</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>0</BreakIfRCount>
-          <Filename>.\mersenne.c</Filename>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>.\main.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression></Expression>
+          <Expression>\\Blinky\main.c\67</Expression>
+        </Bp>
+        <Bp>
+          <Number>2</Number>
+          <Type>0</Type>
+          <LineNumber>88</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>826</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>.\main.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\Blinky\main.c\88</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
         <Ww>
           <count>0</count>
           <WinNumber>1</WinNumber>
-          <ItemText>g_phases</ItemText>
+          <ItemText>next_idx</ItemText>
+        </Ww>
+        <Ww>
+          <count>1</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>runningXor</ItemText>
         </Ww>
       </WatchWindow1>
       <ScvdPack>
@@ -224,7 +245,7 @@
         <AscS3>0</AscS3>
         <aSer3>0</aSer3>
         <eProf>0</eProf>
-        <aLa>1</aLa>
+        <aLa>0</aLa>
         <aPa1>0</aPa1>
         <AscS4>0</AscS4>
         <aSer4>0</aSer4>
@@ -246,13 +267,6 @@
       <pszMrulep></pszMrulep>
       <pSingCmdsp></pSingCmdsp>
       <pMultCmdsp></pMultCmdsp>
-      <LogicAnalyzers>
-        <Wi>
-          <IntNumber>0</IntNumber>
-          <FirstString>`status.BYTE</FirstString>
-          <SecondString>FF00000000000000000000000000000000E06F40020000000000000000000000000000007374617475732E425954450000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000001000000000000000000F03F0D0000000000000000000000000000000000000002030000</SecondString>
-        </Wi>
-      </LogicAnalyzers>
       <DebugDescription>
         <Enable>1</Enable>
         <EnableFlashSeq>0</EnableFlashSeq>
@@ -276,8 +290,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\mersenne.c</PathWithFileName>
-      <FilenameWithoutPath>mersenne.c</FilenameWithoutPath>
+      <PathWithFileName>.\main.c</PathWithFileName>
+      <FilenameWithoutPath>main.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

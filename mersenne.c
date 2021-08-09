@@ -1,110 +1,47 @@
-// Adapted from Blinky.c from the ARM FreeRTOS example
+// adapted from the pseudocode at https://en.wikipedia.org/wiki/Mersenne_Twister
 
-#include <stdio.h>
+#define N 624
+#define M 397
+#define W 32
 
-#include "RTE_Components.h"
-#include CMSIS_device_header
+const unsigned f = 1812433253;
+const unsigned a = 0x9908B0DF;
+const unsigned u = 11, d = 0xFFFFFFFF;
+const unsigned s = 7, b = 0x9D2C5680;
+const unsigned t = 15, c = 0xEFC60000;
 
-#include "cmsis_os2.h"
+unsigned state [N];
+unsigned next_idx = 0;
 
-
-osThreadId_t processorThread;
-osThreadId_t transmitterThread;
-osThreadId_t receiverThread;
-
-osMessageQueueId_t transmitQueue;
-osMessageQueueId_t receiveQueue;
-
-#pragma anon_unions
-
-volatile union {
-	unsigned char BYTE;
-	struct {
-		 unsigned char PROCESSING: 1;
-		 unsigned char TRANSMITTING: 1;
-		 unsigned char RECEIVING: 1;
-		 unsigned char UNUSED: 5;
-	};
-} status;
-
-void process (void *argument) {
-  uint32_t flags;
-	char value;
-	uint32_t primes [] = {2, 3, 5, 7, 11, 13, 17, 19 };
-	for (;;) {
-		status.PROCESSING = 0;
-		flags = osThreadFlagsWait(0x0000FFFF, osFlagsWaitAny ,osWaitForever);
-		status.PROCESSING = 1;
-		value = 0;
-		char bitSet = 1;
-		int i = 0;
-		while(flags != 1 && bitSet != 0) {
-			while(flags % primes[i] == 0) {
-				flags /= primes[i];
-				value |= bitSet;
-			}
-			i++;
-			bitSet <<= 1;
-		}
-		if (flags == 1) {
-			osMessageQueuePut(transmitQueue, &value, 1, osWaitForever);
-		}
-		else {
-			value = flags & 0xFF;
-			osMessageQueuePut(transmitQueue, &value, 1, osWaitForever);
-		}
-  }
+void seed(unsigned s) {
+	state[0] = s;
+	for (int i = 1; i < N; i++) {
+		state[i] = ((f * (state[i-1] ^ (state[i-1] >> (W-2)))) + i);
+	}
+	next_idx = 0;
 }
 
-void transmit (void *argument) {
-	char value;
-	uint8_t prio;
-	
-  for (;;) {
-		status.TRANSMITTING = 0;
-		osMessageQueueGet(transmitQueue, &value, &prio, osWaitForever);
-		status.TRANSMITTING = 1;
-		osDelay(100);	// mimic transmit time
-		status.TRANSMITTING = 0;
-		osMessageQueuePut(receiveQueue, &value, 1, osWaitForever);
-		status.TRANSMITTING = 1;
-  }
+void twist() {
+	for (int i = 0; i < N; i++) {
+		int x = state[(i+1) % N];
+		int xa = x >> 1;
+		if (x & 0x1) {
+			xa ^= a;
+		}
+		state[i] = state[(i + M) % N] ^ xa;
+	}
 }
 
-void receive (void *argument) {
-	char value;
-	uint8_t prio;
-	uint32_t valueSquaredPlusOne;
-	
-  for (;;) {
-		status.RECEIVING = 0;
-    osMessageQueueGet(receiveQueue, &value, &prio, osWaitForever);
-		status.RECEIVING = 1;
-    valueSquaredPlusOne = value;
-		valueSquaredPlusOne *= valueSquaredPlusOne;
-		valueSquaredPlusOne += 1;
-		osThreadFlagsSet(processorThread, valueSquaredPlusOne);
-  }
-}
-
-int main (void) {
-
-	char seed = 0xAA;
-  // System Initialization
-  SystemCoreClockUpdate();
-
-  osKernelInitialize();                 // Initialize CMSIS-RTOS
-  transmitQueue = osMessageQueueNew (8, 8, NULL);
-	receiveQueue = osMessageQueueNew (8, 8, NULL);
-	osMessageQueuePut(receiveQueue, &seed, 1, osWaitForever);
-	
-  receiverThread = osThreadNew(receive, NULL, NULL);
-  processorThread = osThreadNew(process, NULL, NULL);
-  transmitterThread = osThreadNew(transmit, NULL, NULL);
-	
-  if (osKernelGetState() == osKernelReady) {
-    osKernelStart();                    // Start thread execution
-  }
-
-  while(1);
+unsigned next() {
+	int y = state[next_idx];
+	y ^= ((y >> u) & d);
+	y ^= ((y >> s) & b);
+	y ^= ((y >> t) & c);
+	y ^= (y >> 1);
+	next_idx += 1;
+	if (next_idx == N) {
+		twist();
+		next_idx = 0;
+	}
+	return y;
 }
